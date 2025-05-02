@@ -11,7 +11,7 @@
     body, html {
       margin: 0; padding: 0; height: 100%; width: 100%;
       font-family: 'UnifrakturCook', cursive;
-      background: black; overflow: hidden;
+      background: transparent; overflow: hidden;
     }
     video {
       position: fixed; top: 0; left: 0;
@@ -21,20 +21,20 @@
     .text-overlay {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 8vw; font-weight: bold; color: #0ff;
+      font-size: 8vw; font-weight: bold; color: rgba(0, 255, 255, 0.7);
       text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
       animation: flicker 2s infinite, fadeIn 2s ease-in-out;
       white-space: nowrap; text-align: center; cursor: pointer;
       transition: color 0.5s, text-shadow 0.5s; padding: 0 5vw;
     }
     .text-overlay.clicked {
-      color: #f0f;
+      color: rgba(255, 0, 255, 0.7);
       text-shadow: 0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f, 0 0 40px #f0f, 0 0 80px #f0f;
     }
     .audio-controls {
       position: fixed; bottom: 20px; left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.6); border: 2px solid #0ff; color: #0ff;
+      background: rgba(0, 0, 0, 0.6); border: 2px solid #0ff; color: rgba(0, 255, 255, 0.7);
       padding: 12px 20px; border-radius: 12px; font-size: 1.2em;
       font-weight: bold; cursor: pointer; z-index: 2;
       text-shadow: 0 0 10px #0ff; transition: all 0.3s ease;
