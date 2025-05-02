@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taka Connected</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 2em;
+      color: #0ff;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .message {
+      z-index: 2;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+      position: absolute;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(0, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+      animation: floatUp linear infinite;
+      cursor: grab;
+      user-select: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-150vh);
+        opacity: 0.1;
+      }
+    }
+
+    .splash {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0ff 0%, transparent 80%);
+      animation: splashAnimation 0.5s ease-out forwards;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    @keyframes splashAnimation {
+      0% {
+        transform: scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(3);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="message">
+    connected 😌<br>
+    𝓦ⅈ𝘵һ 𝖊ɑɑ𝖊 ɑ𝖓𝒹 𝓼𝘵𝖊𝖊ℤ𝖊 <strong style="color: #ff0; text-shadow: 0 0 5px #f0f, 0 0 15px #ff0;">𝘚𝔸Ꮇ</strong>
+  </div>
+
+  <script>
+    function createBubble() {
+      const bubble = document.createElement('div');
+      const size = Math.random() * 80 + 80;
+      bubble.className = 'bubble';
+      bubble.style.width = bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * (window.innerWidth - size) + 'px';
+      bubble.style.top = Math.random() * (window.innerHeight - size) + 'px';
+      bubble.style.animationDuration = (10 + Math.random() * 10) + 's';
+      bubble.style.backgroundColor = `hsla(${Math.random() * 360}, 100%, 60%, 0.3)`;
+      document.body.appendChild(bubble);
+
+      // Click to pop
+      bubble.addEventListener('click', () => {
+        const rect = bubble.getBoundingClientRect();
+        bubble.remove();
+        const splash = document.createElement('div');
+        splash.className = 'splash';
+        splash.style.width = splash.style.height = size + 'px';
+        splash.style.left = rect.left + 'px';
+        splash.style.top = rect.top + 'px';
+        document.body.appendChild(splash);
+        setTimeout(() => splash.remove(), 500);
+      });
+
+      // Drag to move
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      bubble.addEventListener('mousedown', e => {
+        isDragging = true;
+        bubble.style.animation = 'none';
+        offsetX = e.clientX - bubble.offsetLeft;
+        offsetY = e.clientY - bubble.offsetTop;
+        bubble.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', e => {
+        if (isDragging) {
+          bubble.style.left = (e.clientX - offsetX) + 'px';
+          bubble.style.top = (e.clientY - offsetY) + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          bubble.style.cursor = 'grab';
+        }
+      });
+
+      setTimeout(() => bubble.remove(), 25000);
+    }
+
+    setInterval(createBubble, 800);
+  </script>
+</body>
+</html>
