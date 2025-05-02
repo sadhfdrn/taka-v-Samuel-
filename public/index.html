@@ -52,42 +52,7 @@
       .text-overlay { font-size: 10vw; }
       .audio-controls { font-size: 1em; padding: 10px 16px; }
     }
-  
-    @keyframes flyAway {
-      0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-        opacity: 1;
-      }
-      40% {
-        transform: translate(-60%, -60%) rotate(10deg);
-        opacity: 0.7;
-      }
-      100% {
-        transform: translate(200vw, -200vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
-    @keyframes flyIn {
-      0% {
-        transform: translate(-200vw, 200vh) rotate(-45deg);
-        opacity: 0;
-      }
-      60% {
-        transform: translate(-60%, -60%) rotate(-10deg);
-        opacity: 0.7;
-      }
-      100% {
-        transform: translate(-50%, -50%) rotate(0deg);
-        opacity: 1;
-      }
-    }
-    .fly-out {
-      animation: flyAway 2s ease-in forwards;
-    }
-    .fly-in {
-      animation: flyIn 2s ease-out forwards;
-    }
-    
+  </style>
 </head>
 <body>
   <video autoplay muted loop>
@@ -105,15 +70,10 @@
     const control = document.querySelector('.audio-controls');
     function autoSwitchText() {
       const el = document.querySelector('.text-overlay');
-      el.classList.add('fly-out');
-      setTimeout(() => {
-        el.textContent = 'Made with love by Samuel';
-        el.classList.remove('fly-out');
-        el.classList.add('clicked', 'fly-in');
-        fadeOutAudio(audio);
-      }, 2000);
+      el.textContent = 'Made with love by Samuel';
+      el.classList.add('clicked');
+      fadeOutAudio(audio);
     }
-    setTimeout(autoSwitchText, 4000);
     setTimeout(autoSwitchText, 4000);
     function toggleAudio() {
       if (audio.paused) {
