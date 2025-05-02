@@ -449,7 +449,7 @@ case 'kickvcf': {
   }
   const fileBuffer = await quoted.download();
   const vcfText = fileBuffer.toString();
-  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:+?(d{7,15})/g)].map(m => m[1]);
+  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:(\\+?\\d{7,15})/g)/g)].map(m => m[1]);
   const vcfJids = phoneNumbers.map(num => num.replace(/D/g, '') + '@s.whatsapp.net');
   const groupMeta = await AndraZyy.groupMetadata(m.chat);
   const groupJids = groupMeta.participants.map(p => p.id);
@@ -493,7 +493,7 @@ case 'addvcf-all': {
 
   const fileBuffer = await quoted.download();
   const vcfText = fileBuffer.toString();
-  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:+?(d{7,15})/g)].map(m => m[1]);
+  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:(\\+?\\d{7,15})/g)/g)].map(m => m[1]);
 
   const jids = phoneNumbers.map(num => num.replace(/D/g, '') + '@s.whatsapp.net');
   global.lastVcfAdd[m.chat] = jids;
@@ -522,7 +522,7 @@ case 'addvcf-except': {
   const exclude = args[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
   const fileBuffer = await quoted.download();
   const vcfText = fileBuffer.toString();
-  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:+?(d{7,15})/g)].map(m => m[1]);
+  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:(\\+?\\d{7,15})/g)/g)].map(m => m[1]);
 
   const jids = phoneNumbers
     .map(num => num.replace(/D/g, '') + '@s.whatsapp.net')
@@ -689,7 +689,7 @@ case 'addvcf-except': {
   const exclude = args[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
   const fileBuffer = await quoted.download();
   const vcfText = fileBuffer.toString();
-  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:+?(d{7,15})/g)].map(m => m[1]);
+  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:(\\+?\\d{7,15})/g)/g)].map(m => m[1]);
 
   const jids = phoneNumbers
     .map(num => num.replace(/D/g, '') + '@s.whatsapp.net')
@@ -720,7 +720,7 @@ case 'addvcf-all': {
 
   const fileBuffer = await quoted.download();
   const vcfText = fileBuffer.toString();
-  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:+?(d{7,15})/g)].map(m => m[1]);
+  const phoneNumbers = [...vcfText.matchAll(/TEL.*?:(\\+?\\d{7,15})/g)/g)].map(m => m[1]);
 
   const jids = phoneNumbers.map(num => num.replace(/D/g, '') + '@s.whatsapp.net');
   global.lastVcfAdd[m.chat] = jids;
