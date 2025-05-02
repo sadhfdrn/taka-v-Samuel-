@@ -1,134 +1,104 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Taka Connected</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bot Connected</title>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 2em;
-      color: #0ff;
-      text-align: center;
-      position: relative;
-      z-index: 1;
+    @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      font-family: 'UnifrakturCook', cursive;
+      background: black; overflow: hidden;
     }
-
-    .message {
-      z-index: 2;
-      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
-      position: absolute;
+    video {
+      position: fixed; top: 0; left: 0;
+      min-width: 100%; min-height: 100%;
+      object-fit: cover; z-index: -1; filter: brightness(0.4);
     }
-
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      background-color: rgba(0, 255, 255, 0.3);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-      animation: floatUp linear infinite;
-      cursor: grab;
-      user-select: none;
+    .text-overlay {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 8vw; font-weight: bold; color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
+      animation: flicker 2s infinite, fadeIn 2s ease-in-out;
+      white-space: nowrap; text-align: center; cursor: pointer;
+      transition: color 0.5s, text-shadow 0.5s; padding: 0 5vw;
     }
-
-    @keyframes floatUp {
-      0% {
-        transform: translateY(100vh);
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(-150vh);
-        opacity: 0.1;
-      }
+    .text-overlay.clicked {
+      color: #f0f;
+      text-shadow: 0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f, 0 0 40px #f0f, 0 0 80px #f0f;
     }
-
-    .splash {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, #0ff 0%, transparent 80%);
-      animation: splashAnimation 0.5s ease-out forwards;
-      pointer-events: none;
-      opacity: 0.9;
+    .audio-controls {
+      position: fixed; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.6); border: 2px solid #0ff; color: #0ff;
+      padding: 12px 20px; border-radius: 12px; font-size: 1.2em;
+      font-weight: bold; cursor: pointer; z-index: 2;
+      text-shadow: 0 0 10px #0ff; transition: all 0.3s ease;
     }
-
-    @keyframes splashAnimation {
-      0% {
-        transform: scale(0.5);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(3);
-        opacity: 0;
-      }
+    .audio-controls:hover { background: #0ff; color: black; }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+      20%, 22%, 24%, 55% { opacity: 0.4; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    @media (max-width: 600px) {
+      .text-overlay { font-size: 10vw; }
+      .audio-controls { font-size: 1em; padding: 10px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="message">
-    connected 😌<br>
-    𝓦ⅈ𝘵һ 𝖊ɑɑ𝖊 ɑ𝖓𝒹 𝓼𝘵𝖊𝖊ℤ𝖊 <strong style="color: #ff0; text-shadow: 0 0 5px #f0f, 0 0 15px #ff0;">𝘚𝔸Ꮇ</strong>
-  </div>
-
+  <video autoplay muted loop>
+    <source src="background.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <audio id="bg-audio" autoplay loop>
+    <source src="background.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div class="text-overlay" onclick="handleTextClick(this)">Bot Successfully Connected</div>
+  <div class="audio-controls" onclick="toggleAudio()">Pause Music</div>
   <script>
-    function createBubble() {
-      const bubble = document.createElement('div');
-      const size = Math.random() * 80 + 80;
-      bubble.className = 'bubble';
-      bubble.style.width = bubble.style.height = size + 'px';
-      bubble.style.left = Math.random() * (window.innerWidth - size) + 'px';
-      bubble.style.top = Math.random() * (window.innerHeight - size) + 'px';
-      bubble.style.animationDuration = (10 + Math.random() * 10) + 's';
-      bubble.style.backgroundColor = `hsla(${Math.random() * 360}, 100%, 60%, 0.3)`;
-      document.body.appendChild(bubble);
-
-      // Click to pop
-      bubble.addEventListener('click', () => {
-        const rect = bubble.getBoundingClientRect();
-        bubble.remove();
-        const splash = document.createElement('div');
-        splash.className = 'splash';
-        splash.style.width = splash.style.height = size + 'px';
-        splash.style.left = rect.left + 'px';
-        splash.style.top = rect.top + 'px';
-        document.body.appendChild(splash);
-        setTimeout(() => splash.remove(), 500);
-      });
-
-      // Drag to move
-      let isDragging = false;
-      let offsetX, offsetY;
-
-      bubble.addEventListener('mousedown', e => {
-        isDragging = true;
-        bubble.style.animation = 'none';
-        offsetX = e.clientX - bubble.offsetLeft;
-        offsetY = e.clientY - bubble.offsetTop;
-        bubble.style.cursor = 'grabbing';
-      });
-
-      document.addEventListener('mousemove', e => {
-        if (isDragging) {
-          bubble.style.left = (e.clientX - offsetX) + 'px';
-          bubble.style.top = (e.clientY - offsetY) + 'px';
-        }
-      });
-
-      document.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          bubble.style.cursor = 'grab';
-        }
-      });
-
-      setTimeout(() => bubble.remove(), 25000);
+    const audio = document.getElementById('bg-audio');
+    const control = document.querySelector('.audio-controls');
+    function handleTextClick(el) {
+      el.classList.toggle('clicked');
+      el.textContent = el.classList.contains('clicked')
+        ? 'Made with love by Samuel'
+        : 'Bot Successfully Connected';
+      fadeOutAudio(audio);
     }
-
-    setInterval(createBubble, 800);
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.volume = 1;
+        audio.play();
+        control.textContent = 'Pause Music';
+      } else {
+        audio.pause();
+        control.textContent = 'Play Music';
+      }
+    }
+    function fadeOutAudio(audioElement) {
+      let volume = audioElement.volume;
+      const interval = setInterval(() => {
+        if (volume > 0.05) {
+          volume -= 0.05;
+          audioElement.volume = volume;
+        } else {
+          audioElement.volume = 0;
+          audioElement.pause();
+          clearInterval(interval);
+          control.textContent = 'Play Music';
+        }
+      }, 100);
+    }
   </script>
 </body>
 </html>
